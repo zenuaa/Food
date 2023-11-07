@@ -39,7 +39,7 @@ window.addEventListener('DOMContentLoaded', function() {
 		}
     });
     
-    // Timer
+    // Timerr
 
     const deadline = '2022-06-11';
 
