@@ -212,6 +212,60 @@
 
 
 
+// Forms
+
+const forms = document.querySelectorAll('form');
+
+const message = {
+    loading: 'loading..',
+    success: 'Thanks w\'ll be in touch..',
+    fail: 'Some things went wrong..'
+}
+
+forms.forEach(item=>{
+    postData(item);
+})
+
+function postData(form) {
+    form.addEventListener('submit', (e)=>{
+        e.preventDefault();
+
+        const divStatusMessage = document.createElement('div');
+        divStatusMessage.classList.add('status');
+        divStatusMessage.textContent = message.loading;
+        form.append(divStatusMessage); 
+        
+        const request = new XMLHttpRequest();
+        request.open('POST', 'js/server.php');
+
+        request.setRequestHeader('content-type', 'application/json')
+        const formData = new FormData(form);
+
+        const obj = {};
+        formData.forEach((value, key)=>{
+            obj[key] = value;
+        })
+
+        const json = JSON.stringify(obj);
+        request.send(json);
+
+        // request.send(formData);
+        request.addEventListener('load', ()=>{
+            if(request.status >=200 && request.status <300){
+                console.log(request.response);
+                divStatusMessage.textContent = message.success;
+                form.reset();
+                setTimeout(()=>{
+                    divStatusMessage.remove()
+                }, 2000);
+            }
+            else{divStatusMessage.textContent = message.fail;} 
+        })
+
+    })
+}
+
+
 
 
 
